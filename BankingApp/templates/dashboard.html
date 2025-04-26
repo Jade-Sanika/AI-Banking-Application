@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VYOM+ Banking Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --dark-bg: #1a2639;
+            --card-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .container {
+            position: relative;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background: linear-gradient(to bottom, var(--primary), var(--dark-bg));
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            width: 250px;
+            height: 100%;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 4px 0 10px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            left: -250px;
+        }
+        
+        .sidebar.open {
+            left: 0;
+        }
+        
+        .logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo-text {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            font-size: 24px;
+            color: var(--secondary);
+        }
+        
+        .close-sidebar {
+            cursor: pointer;
+            font-size: 20px;
+            transition: var(--transition);
+        }
+        
+        .close-sidebar:hover {
+            color: var(--accent);
+        }
+        
+        .nav-menu {
+            list-style: none;
+        }
+        
+        .nav-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            color: white;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 3px solid var(--secondary);
+        }
+        
+        .nav-item.active {
+            background-color: rgba(52, 152, 219, 0.2);
+            border-left: 3px solid var(--secondary);
+        }
+        
+        .nav-item i {
+            margin-right: 12px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-item a {
+            color: inherit;
+            text-decoration: none;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-item a i {
+            margin-right: 12px;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 20px;
+            transition: var(--transition);
+            margin-left: 0;
+        }
+        
+        .top-bar {
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .hamburger {
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: var(--transition);
+        }
+        
+        .hamburger:hover {
+            color: var(--secondary);
+        }
+        
+        .welcome {
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .notification {
+            position: relative;
+            margin-right: 5px;
+            cursor: pointer;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        
+        .notification:hover {
+            background: rgba(52, 152, 219, 0.2);
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 15px;
+            background: rgba(52, 152, 219, 0.1);
+            border-radius: 30px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        
+        .user-info:hover {
+            background: rgba(52, 152, 219, 0.2);
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(to right, var(--secondary), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 3px 6px rgba(52, 152, 219, 0.2);
+        }
+        
+        .username {
+            font-weight: 600;
+        }
+        
+        /* Grid Layout */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .dashboard-grid-large {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+        
+        /* Cards */
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            padding: 25px;
+            transition: var(--transition);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .card-actions {
+            color: var(--secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .card-actions:hover {
+            color: var(--accent);
+        }
+        
+        /* Account Card */
+        .account-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            height: 180px;
+            box-shadow: 0 8px 20px rgba(44, 62, 80, 0.3);
+            transition: var(--transition);
+        }
+        
+        .account-card:hover {
+            transform: scale(1.02);
+        }
+        
+        .account-type {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+        
+        .account-balance {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 35px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .account-number {
+            font-size: 16px;
+            letter-spacing: 2px;
+            opacity: 0.9;
+        }
+        
+        .card-pattern {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            opacity: 0.15;
+            font-size: 120px;
+        }
+        
+        /* Transactions */
+        .transaction-list {
+            margin-top: 15px;
+        }
+        
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            transition: var(--transition);
+        }
+        
+        .transaction-item:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+        
+        .transaction-info {
+            display: flex;
+            align-items: center;
+        }
+        
+        .transaction-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background-color: rgba(52, 152, 219, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary);
+            font-size: 18px;
+        }
+        
+        .transaction-details {
+            line-height: 1.5;
+        }
+        
+        .transaction-name {
+            font-weight: 600;
+        }
+        
+        .transaction-date {
+            font-size: 13px;
+            color: #777;
+        }
+        
+        .transaction-amount {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .transaction-amount.credit {
+            color: var(--success);
+        }
+        
+        .transaction-amount.debit {
+            color: var(--accent);
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .action-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f7fa;
+            border-radius: 12px;
+            padding: 15px;
+            flex: 1;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+        }
+        
+        .action-button:hover {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            box-shadow: 0 5px 10px rgba(52, 152, 219, 0.3);
+        }
+        
+        .action-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .action-text {
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        /* Bills */
+        .bill-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            transition: var(--transition);
+        }
+        
+        .bill-item:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+        
+        .bill-item:last-child {
+            border-bottom: none;
+        }
+        
+        .bill-info {
+            line-height: 1.5;
+        }
+        
+        .bill-name {
+            font-weight: 600;
+        }
+        
+        .bill-date {
+            font-size: 13px;
+            color: #777;
+        }
+        
+        .bill-amount {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        
+        .bill-status {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+        
+        .status-paid {
+            background-color: rgba(46, 204, 113, 0.15);
+            color: var(--success);
+        }
+        
+        .status-due {
+            background-color: rgba(243, 156, 18, 0.15);
+            color: var(--warning);
+        }
+        
+        /* Budget */
+        .budget-progress {
+            margin: 10px 0 15px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #eee;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-fill.safe {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+        }
+        
+        .progress-fill.warning {
+            background: linear-gradient(to right, #f39c12, #e67e22);
+        }
+        
+        .progress-fill.danger {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+        }
+        
+        .budget-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #777;
+        }
+        
+        /* Chat Button */
+        .chat-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+            z-index: 1000;
+            transition: var(--transition);
+            text-decoration: none;
+        }
+        
+        .chat-button:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 900;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .dashboard-grid-large {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .top-bar {
+                flex-wrap: wrap;
+            }
+            
+            .welcome {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .chat-button {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="logo">
+                <div class="logo-text">
+                    <i class="fas fa-university logo-icon"></i>
+                    <span>VYOM+ Banking</span>
+                </div>
+                <i class="fas fa-times close-sidebar" id="closeSidebar"></i>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item active">
+                    <a href="#"><i class="fas fa-chart-pie"></i> Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/account"><i class="fas fa-credit-card"></i> Accounts</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/loan_approval"><i class="fas fa-hand-holding-usd"></i> Loan Approval</a>
+                </li> 
+                <li class="nav-item">
+                    <a href="/transfers"><i class="fas fa-exchange-alt"></i> Transfers</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/payments"><i class="fas fa-money-bill-wave"></i> Payments</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/statements"><i class="fas fa-file-invoice"></i> Statements</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/investments"><i class="fas fa-chart-line"></i> Investments</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/alerts"><i class="fas fa-bell"></i> Alerts</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/fraud"><i class="fas fa-shield-alt"></i> Fraud Detection</a>
+                </li> 
+                <li class="nav-item">
+                    <a href="/query"><i class="fas fa-question-circle"></i> Ask Query</a>
+                </li> 
+                <li class="nav-item">
+                    <a href="/settings"><i class="fas fa-cog"></i> Settings</a>
+                </li>             
+            </ul>
+        </div>
+        
+        <!-- Overlay for mobile -->
+        <div class="overlay" id="overlay"></div>
+        
+        <!-- Main Content -->
+        <div class="main-content" id="mainContent">
+            <div class="top-bar">
+                <div class="welcome">
+                    <i class="fas fa-bars hamburger" id="hamburger"></i>
+                    <span>Welcome, <span id="username">{{ user }}</span>!</span>
+                </div>
+                <div class="user-section">
+                    <div class="notification">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge">3</span>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-avatar" id="userInitial">{{ user[0] }}</div>
+                        <div class="username" id="userFullName">{{ user }}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Accounts Summary -->
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Checking Account</div>
+                        <div class="card-actions"><i class="fas fa-ellipsis-v"></i></div>
+                    </div>
+                    <div class="account-card">
+                        <div class="account-type">Primary Checking</div>
+                        <div class="account-balance">$12,458.32</div>
+                        <div class="account-number">•••• 4832</div>
+                        <div class="card-pattern"><i class="fas fa-credit-card"></i></div>
+                    </div>
+                    <div class="quick-actions">
+                        <div class="action-button">
+                            <div class="action-icon"><i class="fas fa-exchange-alt"></i></div>
+                            <div class="action-text">Transfer</div>
+                        </div>
+                        <div class="action-button">
+                            <div class="action-icon"><i class="fas fa-money-bill"></i></div>
+                            <div class="action-text">Pay</div>
+                        </div>
+                        <div class="action-button">
+                            <div class="action-icon"><i class="fas fa-file-alt"></i></div>
+                            <div class="action-text">Statement</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Savings Account</div>
+                        <div class="card-actions"><i class="fas fa-ellipsis-v"></i></div>
+                    </div>
+                    <div class="account-card">
+                        <div class="account-type">High-Yield Savings</div>
+                        <div class="account-balance">$45,752.89</div>
+                        <div class="account-number">•••• 7721</div>
+                        <div class="card-pattern"><i class="fas fa-piggy-bank"></i></div>
+                    </div>
+                    <div class="quick-actions">
+                        <div class="action-button">
+                            <div class="action-icon"><i class="fas fa-exchange-alt"></i></div>
+                            <div class="action-text">Transfer</div>
+                        </div>
+                        <div class="action-button">
+                            <div class="action-icon"><i class="fas fa-download"></i></div>
+                            <div class="action-text">Deposit</div>
+                        </div>
+                        <div class="action-button">
+                            <div class="action-icon"><i class="fas fa-bullseye"></i></div>
+                            <div class="action-text">Goals</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Credit Card</div>
+                        <div class="card-actions"><i class="fas fa-ellipsis-v"></i></div>
+                    </div>
+                    <div class="account-card">
+                        <div class="account-type">Rewards Platinum</div>
+                        <div class="account-balance">$1,285.45</div>
+                        <div class="account-number">•••• 3358</div>
+                        <div class="card-pattern"><i class="fas fa-sync-alt"></i></div>
+                    </div>
+                    <div class="quick-actions">
+                        <div class="action-button">
+                            <div class="action-icon"><i class="fas fa-money-bill"></i></div>
+                            <div class="action-text">Pay</div>
+                        </div>
+                        <div class="action-button">
+                            <div class="action-icon"><i class="fas fa-gift"></i></div>
+                            <div class="action-text">Rewards</div>
+                        </div>
+                        <div class="action-button">
+                            <div class="action-icon"><i class="fas fa-file-alt"></i></div>
+                            <div class="action-text">Statement</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dashboard-grid-large">
+                <!-- Recent Transactions -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Recent Transactions</div>
+                        <div class="card-actions">View All</div>
+                    </div>
+                    <div class="transaction-list">
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-icon"><i class="fas fa-shopping-cart"></i></div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">Whole Foods Market</div>
+                                    <div class="transaction-date">Today, 10:23 AM</div>
+                                </div>
+                            </div>
+                            <div class="transaction-amount debit">-$84.29</div>
+                        </div>
+                        
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-icon"><i class="fas fa-bolt"></i></div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">City Power & Electric</div>
+                                    <div class="transaction-date">Yesterday, 5:15 PM</div>
+                                </div>
+                            </div>
+                            <div class="transaction-amount debit">-$142.55</div>
+                        </div>
+                        
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-icon"><i class="fas fa-briefcase"></i></div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">Salary Deposit</div>
+                                    <div class="transaction-date">Mar 28, 9:00 AM</div>
+                                </div>
+                            </div>
+                            <div class="transaction-amount credit">+$3,450.00</div>
+                        </div>
+                        
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-icon"><i class="fas fa-home"></i></div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">Mortgage Payment</div>
+                                    <div class="transaction-date">Mar 26, 2:30 PM</div>
+                                </div>
+                            </div>
+                            <div class="transaction-amount debit">-$1,850.00</div>
+                        </div>
+                        
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-icon"><i class="fas fa-coffee"></i></div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">Starbucks</div>
+                                    <div class="transaction-date">Mar 26, 8:45 AM</div>
+                                </div>
+                            </div>
+                            <div class="transaction-amount debit">-$6.48</div>
+                        </div>
+                        
+                        <div class="transaction-item">
+                            <div class="transaction-info">
+                                <div class="transaction-icon"><i class="fas fa-shopping-bag"></i></div>
+                                <div class="transaction-details">
+                                    <div class="transaction-name">Amazon.com</div>
+                                    <div class="transaction-date">Mar 25, 1:15 PM</div>
+                                </div>
+                            </div>
+                            <div class="transaction-amount debit">-$35.27</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Right Column -->
+                <div>
+                    <!-- Upcoming Bills -->
+                    <div class="card" style="margin-bottom: 25px;">
+                        <div class="card-header">
+                            <div class="card-title">Upcoming Bills</div>
+                            <div class="card-actions">View All</div>
+                        </div>
+                        <div>
+                            <div class="bill-item">
+                                <div class="bill-info">
+                                    <div class="bill-name">Netflix Subscription</div>
+                                    <div class="bill-date">Due Apr 5</div>
+                                </div>
+                                <div>
+                                    <div class="bill-amount">$15.99</div>
+                                    <div class="bill-status status-due">Due</div>
+                                </div>
+                            </div>
+                            
+                            <div class="bill-item">
+                                <div class="bill-info">
+                                    <div class="bill-name">Internet Service</div>
+                                    <div class="bill-date">Due Apr 8</div>
+                                </div>
+                                <div>
+                                    <div class="bill-amount">$79.99</div>
+                                    <div class="bill-status status-due">Due</div>
+                                </div>
+                            </div>
+                            
+                            <div class="bill-item">
+                                <div class="bill-info">
+                                    <div class="bill-name">Water Bill</div>
+                                    <div class="bill-date">Due Apr 12</div>
+                                </div>
+                                <div>
+                                    <div class="bill-amount">$48.32</div>
+                                    <div class="bill-status status-due">Due</div>
+                                </div>
+                            </div>
+                            
+                            <div class="bill-item">
+                                <div class="bill-info">
+                                    <div class="bill-name">Phone Bill</div>
+                                    <div class="bill-date">Mar 28</div>
+                                </div>
+                                <div>
+                                    <div class="bill-amount">$65.00</div>
+                                    <div class="bill-status status-paid">Paid</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Budget Overview -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Budget Overview</div>
+                            <div class="card-actions">Manage</div>
+                        </div>
+                        <div>
+                            <div style="margin-bottom: 18px;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>Groceries</div>
+                                    <div>$325 / $400</div>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill safe" style="width: 81%;"></div>
+                                    </div>
+                                </div>
+                                <div class="budget-details">
+                                    <div>81% used</div>
+                                    <div>$75 left</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 18px;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>Dining Out</div>
+                                    <div>$175 / $200</div>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill warning" style="width: 88%;"></div>
+                                    </div>
+                                </div>
+                                <div class="budget-details">
+                                    <div>88% used</div>
+                                    <div>$25 left</div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 18px;">
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>Entertainment</div>
+                                    <div>$120 / $100</div>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill danger" style="width: 120%;"></div>
+                                    </div>
+                                </div>
+                                <div class="budget-details">
+                                    <div>120% used</div>
+                                    <div>$20 over</div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div>Shopping</div>
+                                    <div>$245 / $300</div>
+                                </div>
+                                <div class="budget-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill safe" style="width: 82%;"></div>
+                                    </div>
+                                </div>
+                                <div class="budget-details">
+                                    <div>82% used</div>
+                                    <div>$55 left</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Chat Button -->
+    <a href="/chatbot" class="chat-button" id="chatButton">
+        <i class="fas fa-comments"></i>
+    </a>
+
+    <script>
+        // Get username from database
+        document.addEventListener('DOMContentLoaded', function() {
+            // This would normally be a fetch request to your backend API
+            // For demonstration, we'll simulate fetching the username
+            function fetchUserData() {
+                // In a real application, this would be a fetch or AJAX request
+                // to your backend API to get the logged-in user's information
+                return new Promise((resolve) => {
+                    // Simulating API response delay
+                    setTimeout(() => {
+                        // This would be the response from your server with user data
+                        resolve({
+                            name: "{{ user }}", // This will be replaced by your templating engine
+                            // Other user data as needed
+                        });
+                    }, 100);
+                });
+            }
+            
+            // Update the UI with the user's information
+            fetchUserData().then(userData => {
+                const username = userData.name;
+                document.getElementById('username').textContent = username;
+                document.getElementById('userFullName').textContent = username;
+                
+                // Set initial for avatar
+                if (username && username.length > 0) {
+                    document.getElementById('userInitial').textContent = username[0].toUpperCase();
+                }
+            });
+            
+            // Sidebar toggle functionality
+            const hamburger = document.getElementById('hamburger');
+            const sidebar = document.getElementById('sidebar');
+            const closeSidebar = document.getElementById('closeSidebar');
+            const overlay = document.getElementById('overlay');
+            const mainContent = document.getElementById('mainContent');
+            
+            hamburger.addEventListener('click', function() {
+                sidebar.classList.add('open');
+                overlay.style.display = 'block';
+            });
+            
+            function closeSidebarFunc() {
+                sidebar.classList.remove('open');
+                overlay.style.display = 'none';
+            }
+            
+            closeSidebar.addEventListener('click', closeSidebarFunc);
+            overlay.addEventListener('click', closeSidebarFunc);
+            
+            // Add click event listeners for the nav items
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    // Remove active class from all items
+                    navItems.forEach(navItem => navItem.classList.remove('active'));
+                    // Add active class to clicked item
+                    this.classList.add('active');
+                    
+                    // Close sidebar on mobile after clicking an item
+                    if (window.innerWidth <= 768) {
+                        closeSidebarFunc();
+                    }
+                });
+            });
+            
+            // Responsive behavior
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    overlay.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

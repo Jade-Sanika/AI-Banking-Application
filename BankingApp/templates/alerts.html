@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Account Alerts | Premier Bank</title>
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --success-color: #16a34a;
+      --danger-color: #dc2626;
+      --text-color: #1e293b;
+      --text-light: #64748b;
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .page-header {
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .alert-card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    .alert-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .alert-title {
+      font-weight: 600;
+      font-size: 16px;
+    }
+
+    .alert-date {
+      font-size: 13px;
+      color: var(--text-light);
+    }
+
+    .alert-message {
+      font-size: 14px;
+      margin-bottom: 12px;
+      color: var(--text-color);
+    }
+
+    .alert-type {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 500;
+      color: white;
+    }
+
+    .info {
+      background-color: var(--primary-color);
+    }
+
+    .success {
+      background-color: var(--success-color);
+    }
+
+    .danger {
+      background-color: var(--danger-color);
+    }
+
+    .no-alerts {
+      text-align: center;
+      padding: 40px 0;
+      color: var(--text-light);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="page-header">
+      <h1 class="page-title">Account Alerts</h1>
+    </div>
+
+    <div class="alert-card">
+      <div class="alert-header">
+        <div class="alert-title">Large Transaction Alert</div>
+        <div class="alert-date">Apr 25, 2025</div>
+      </div>
+      <div class="alert-message">
+        A debit of <strong>$3,500.00</strong> was made from your Premier Checking account to "Auto Loan Payment".
+      </div>
+      <span class="alert-type danger">Important</span>
+    </div>
+
+    <div class="alert-card">
+      <div class="alert-header">
+        <div class="alert-title">Salary Credit</div>
+        <div class="alert-date">Apr 24, 2025</div>
+      </div>
+      <div class="alert-message">
+        Your salary of <strong>$5,200.00</strong> has been credited to your account.
+      </div>
+      <span class="alert-type success">Credit</span>
+    </div>
+
+    <div class="alert-card">
+      <div class="alert-header">
+        <div class="alert-title">New Device Login</div>
+        <div class="alert-date">Apr 23, 2025</div>
+      </div>
+      <div class="alert-message">
+        A new login was detected from device <strong>Pixel 7 Pro</strong> using Chrome on Android.
+      </div>
+      <span class="alert-type info">Info</span>
+    </div>
+
+    <div class="alert-card">
+      <div class="alert-header">
+        <div class="alert-title">Low Balance Warning</div>
+        <div class="alert-date">Apr 20, 2025</div>
+      </div>
+      <div class="alert-message">
+        Your account balance has dropped below <strong>$500.00</strong>. Please fund your account.
+      </div>
+      <span class="alert-type danger">Warning</span>
+    </div>
+
+    <div class="no-alerts">
+      No older alerts to display.
+    </div>
+  </div>
+</body>
+</html>

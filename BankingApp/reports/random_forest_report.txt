@@ -1,0 +1,17 @@
+Random Forest Evaluation Report
+==================================================
+              precision    recall  f1-score   support
+
+   Non-Fraud       0.99      0.99      0.99      1321
+       Fraud       0.96      0.95      0.95       179
+
+    accuracy                           0.99      1500
+   macro avg       0.97      0.97      0.97      1500
+weighted avg       0.99      0.99      0.99      1500
+
+Confusion Matrix:
+[[1313,    8],
+ [   9,  170]]
+
+Average Precision: 0.9767
+ROC AUC Score: 0.9934

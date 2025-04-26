@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfers | Premier Banking</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin: 0;
+        }
+        
+        .transfer-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .transfer-option {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        
+        .transfer-option:last-child {
+            border-bottom: none;
+        }
+        
+        .transfer-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e3f2fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #3498db;
+            font-size: 20px;
+        }
+        
+        .transfer-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        
+        .transfer-info p {
+            margin: 0;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            color: #2c3e50;
+            margin: 25px 0 15px 0;
+        }
+        
+        .recent-transfer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .recent-transfer:last-child {
+            border-bottom: none;
+        }
+        
+        .recent-details {
+            display: flex;
+            align-items: center;
+        }
+        
+        .recent-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e3f2fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #3498db;
+        }
+        
+        .recent-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+        
+        .recent-info p {
+            margin: 0;
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        
+        .recent-amount {
+            font-weight: bold;
+            text-align: right;
+        }
+        
+        .positive {
+            color: #27ae60;
+        }
+        
+        .negative {
+            color: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Transfers</h1>
+        </div>
+        
+        <div class="transfer-card">
+            <div class="transfer-option">
+                <div class="transfer-icon">🔁</div>
+                <div class="transfer-info">
+                    <h3>Between My Accounts</h3>
+                    <p>Transfer between your accounts instantly</p>
+                </div>
+            </div>
+            
+            <div class="transfer-option">
+                <div class="transfer-icon">👤</div>
+                <div class="transfer-info">
+                    <h3>To Another Person</h3>
+                    <p>Send money to friends and family</p>
+                </div>
+            </div>
+            
+            <div class="transfer-option">
+                <div class="transfer-icon">🏦</div>
+                <div class="transfer-info">
+                    <h3>To Another Bank</h3>
+                    <p>Transfer to accounts at other banks</p>
+                </div>
+            </div>
+            
+            <div class="transfer-option">
+                <div class="transfer-icon">🌐</div>
+                <div class="transfer-info">
+                    <h3>International Transfer</h3>
+                    <p>Send money worldwide</p>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Quick Transfer</h2>
+        
+        <div class="transfer-card">
+            <div class="transfer-option">
+                <div class="transfer-icon">👩‍💼</div>
+                <div class="transfer-info">
+                    <h3>John Smith</h3>
+                    <p>•••• 4582</p>
+                </div>
+            </div>
+            
+            <div class="transfer-option">
+                <div class="transfer-icon">👨‍💼</div>
+                <div class="transfer-info">
+                    <h3>Sarah Johnson</h3>
+                    <p>•••• 6721</p>
+                </div>
+            </div>
+            
+            <div class="transfer-option">
+                <div class="transfer-icon">🏠</div>
+                <div class="transfer-info">
+                    <h3>Rent Payment</h3>
+                    <p>•••• 3345</p>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Recent Transfers</h2>
+        
+        <div class="transfer-card">
+            <div class="recent-transfer">
+                <div class="recent-details">
+                    <div class="recent-icon">👨‍💼</div>
+                    <div class="recent-info">
+                        <h4>To: Michael Brown</h4>
+                        <p>May 18, 2023 • Completed</p>
+                    </div>
+                </div>
+                <div class="recent-amount negative">-$250.00</div>
+            </div>
+            
+            <div class="recent-transfer">
+                <div class="recent-details">
+                    <div class="recent-icon">🔁</div>
+                    <div class="recent-info">
+                        <h4>To Savings Account</h4>
+                        <p>May 15, 2023 • Completed</p>
+                    </div>
+                </div>
+                <div class="recent-amount negative">-$500.00</div>
+            </div>
+            
+            <div class="recent-transfer">
+                <div class="recent-details">
+                    <div class="recent-icon">👩‍💼</div>
+                    <div class="recent-info">
+                        <h4>From: Emily Wilson</h4>
+                        <p>May 10, 2023 • Completed</p>
+                    </div>
+                </div>
+                <div class="recent-amount positive">+$175.50</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

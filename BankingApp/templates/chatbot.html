@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Assistant</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+            overflow: hidden;
+            height: 90vh;
+        }
+        .chat-header {
+            padding: 15px;
+            background-color: #0d6efd;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .language-selector {
+            display: flex;
+            align-items: center;
+        }
+        .language-selector select {
+            margin-left: 10px;
+            padding: 5px;
+            border-radius: 4px;
+            border: none;
+        }
+        .chat-body {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            max-height: 100%;
+            scroll-behavior: smooth;
+        }
+        .chat-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-body::-webkit-scrollbar-thumb {
+            background-color: #ccc;
+            border-radius: 4px;
+        }
+        .message {
+            margin-bottom: 15px;
+            max-width: 80%;
+            padding: 10px 15px;
+            border-radius: 20px;
+            position: relative;
+            word-wrap: break-word;
+        }
+        .user-message {
+            align-self: flex-end;
+            background-color: #0d6efd;
+            color: white;
+        }
+        .bot-message {
+            align-self: flex-start;
+            background-color: #f1f1f1;
+            color: #333;
+        }
+        .chat-component {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .chat-footer {
+            position: sticky;
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            margin-right: 10px;
+        }
+        .send-button {
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .microphone-button {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+        }
+        .transaction-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .transaction-table th, .transaction-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .appointment-form .form-group {
+            margin-bottom: 15px;
+        }
+        .loan-options .loan-option {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            cursor: pointer;
+        }
+        .loan-options .loan-option:hover {
+            background-color: #f8f9fa;
+        }
+        .balance-card {
+            background: linear-gradient(135deg, #0d6efd, #0a58ca);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .balance-amount {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .typing-indicator {
+            display: flex;
+            padding: 10px 15px;
+            background-color: #f1f1f1;
+            border-radius: 20px;
+            align-self: flex-start;
+            margin-bottom: 15px;
+        }
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #333;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typing-dot 1.4s infinite ease-in-out both;
+        }
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        
+        @keyframes typing-dot {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        
+        /* Adding styles from the second file */
+        .sources-message {
+            align-self: flex-start;
+            background-color: #e6f7ff;
+            color: #333;
+            font-size: 0.9em;
+            padding: 8px 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div>
+                <h3>💬 Banking Assistant</h3>
+                <p class="mb-0">Your AI-powered financial advisor</p>
+            </div>
+            <div class="language-selector">
+                <label for="language">Language:</label>
+                <select id="language" class="form-select form-select-sm">
+                    <option value="english">English</option>
+                    <option value="hindi">Hindi</option>
+                    <option value="spanish">Spanish</option>
+                    <option value="french">French</option>
+                    <option value="arabic">Arabic</option>
+                    <option value="chinese">Chinese</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="chat-body" id="chatBody">
+            <!-- Chat messages will be added here dynamically -->
+            <div class="bot-message message">
+                Hello! I'm your AI banking assistant. How can I help you today?
+            </div>
+            
+            <!-- Initial suggestions -->
+            <div class="bot-message message">
+                You can ask me about:
+                <div class="chat-component">
+                    <button class="btn btn-outline-primary btn-sm m-1 suggestion">Check account balance</button>
+                    <button class="btn btn-outline-primary btn-sm m-1 suggestion">View recent transactions</button>
+                    <button class="btn btn-outline-primary btn-sm m-1 suggestion">Book an appointment</button>
+                    <button class="btn btn-outline-primary btn-sm m-1 suggestion">Loan options</button>
+                    <button class="btn btn-outline-primary btn-sm m-1 suggestion">Financial insights</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="chat-footer">
+            <button class="microphone-button" id="microphoneButton">
+                <i class="fas fa-microphone"></i>
+            </button>
+            <input type="text" class="chat-input" id="chatInput" placeholder="Type your message...">
+            <button class="send-button" id="sendButton">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const chatBody = document.getElementById('chatBody');
+            const chatInput = document.getElementById('chatInput');
+            const sendButton = document.getElementById('sendButton');
+            const microphoneButton = document.getElementById('microphoneButton');
+            const languageSelector = document.getElementById('language');
+            
+            // Generate random session ID
+            const sessionId = Math.random().toString(36).substring(2);
+            
+            // Initialize Speech Recognition API
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            let recognition;
+            
+            if (SpeechRecognition) {
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.lang = 'en-US';
+                
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    chatInput.value = transcript;
+                    microphoneButton.innerHTML = '<i class="fas fa-microphone"></i>';
+                    microphoneButton.classList.remove('btn-danger');
+                };
+                
+                recognition.onend = function() {
+                    microphoneButton.innerHTML = '<i class="fas fa-microphone"></i>';
+                    microphoneButton.classList.remove('btn-danger');
+                };
+                
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error', event.error);
+                    microphoneButton.innerHTML = '<i class="fas fa-microphone"></i>';
+                    microphoneButton.classList.remove('btn-danger');
+                };
+            }
+            
+            // Toggle speech recognition
+            microphoneButton.addEventListener('click', function() {
+                if (SpeechRecognition) {
+                    if (microphoneButton.classList.contains('btn-danger')) {
+                        recognition.stop();
+                    } else {
+                        // Update language based on selection
+                        switch(languageSelector.value) {
+                            case 'hindi': recognition.lang = 'hi-IN'; break;
+                            case 'spanish': recognition.lang = 'es-ES'; break;
+                            case 'french': recognition.lang = 'fr-FR'; break;
+                            case 'arabic': recognition.lang = 'ar-SA'; break;
+                            case 'chinese': recognition.lang = 'zh-CN'; break;
+                            default: recognition.lang = 'en-US';
+                        }
+                        
+                        recognition.start();
+                        microphoneButton.innerHTML = '<i class="fas fa-stop"></i>';
+                        microphoneButton.classList.add('btn-danger');
+                    }
+                } else {
+                    alert('Speech recognition is not supported in your browser');
+                }
+            });
+
+            // Function to add user message to chat
+            function addUserMessage(message) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'user-message message';
+                messageDiv.textContent = message;
+                chatBody.appendChild(messageDiv);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+            
+            // Function to add bot message to chat
+            function addBotMessage(message) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'bot-message message';
+                messageDiv.textContent = message;
+                chatBody.appendChild(messageDiv);
+                chatBody.scrollTop = chatBody.scrollHeight;
+                return messageDiv;
+            }
+            
+            // Function to add sources message to chat
+            function addSourcesMessage(sources) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'sources-message message';
+                messageDiv.innerHTML = "<strong>📚 Sources:</strong><br>" + sources;
+                chatBody.appendChild(messageDiv);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+            
+            // Function to show typing indicator
+            function showTypingIndicator() {
+                const indicator = document.createElement('div');
+                indicator.className = 'typing-indicator';
+                indicator.id = 'typingIndicator';
+                
+                for (let i = 0; i < 3; i++) {
+                    const dot = document.createElement('div');
+                    dot.className = 'typing-dot';
+                    indicator.appendChild(dot);
+                }
+                
+                chatBody.appendChild(indicator);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+            
+            // Function to remove typing indicator
+            function removeTypingIndicator() {
+                const indicator = document.getElementById('typingIndicator');
+                if (indicator) {
+                    indicator.remove();
+                }
+            }
+
+            // Function to play audio if available
+            function playAudio(audioUrl) {
+                if (audioUrl) {
+                    const audio = new Audio(audioUrl);
+                    audio.play();
+                }
+            }
+
+            // Function to render dynamic components based on bot response
+            function renderComponent(component, parentElement) {
+                switch(component.type) {
+                    case 'appointment_form':
+                        const appointmentForm = document.createElement('div');
+                        appointmentForm.className = 'chat-component appointment-form';
+                        
+                        appointmentForm.innerHTML = `
+                            <h5>Book an Appointment</h5>
+                            <div class="form-group">
+                                <label for="appointmentType">Appointment Type</label>
+                                <select class="form-select" id="appointmentType">
+                                    ${component.options.map(option => 
+                                        `<option value="${option.value}">${option.label}</option>`
+                                    ).join('')}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointmentDate">Date & Time</label>
+                                <input type="datetime-local" class="form-control" id="appointmentDate">
+                            </div>
+                            <div class="form-group">
+                                <label for="appointmentNotes">Notes (Optional)</label>
+                                <textarea class="form-control" id="appointmentNotes" rows="2"></textarea>
+                            </div>
+                            <button class="btn btn-primary" id="bookAppointmentBtn">Book Appointment</button>
+                        `;
+                        
+                        parentElement.appendChild(appointmentForm);
+                        
+                        // Add event listener to booking button
+                        document.getElementById('bookAppointmentBtn').addEventListener('click', function() {
+                            const appointmentType = document.getElementById('appointmentType').value;
+                            const appointmentDate = document.getElementById('appointmentDate').value;
+                            const notes = document.getElementById('appointmentNotes').value;
+                            
+                            if (!appointmentType || !appointmentDate) {
+                                alert('Please select appointment type and date');
+                                return;
+                            }
+                            
+                            // Send appointment booking request
+                            showTypingIndicator();
+                            
+                            setTimeout(() => {
+                                removeTypingIndicator();
+                                const referenceId = Math.floor(100000 + Math.random() * 900000); // 6-digit reference number
+                                addBotMessage(`Appointment successfully booked for ${new Date(appointmentDate).toLocaleString()}. Reference #${referenceId}`);
+                            }, 1000);
+                        });
+                        break;
+                        
+                    case 'balance':
+                        const balanceCard = document.createElement('div');
+                        balanceCard.className = 'chat-component balance-card';
+                        
+                        balanceCard.innerHTML = `
+                            <div>Current Account Balance</div>
+                            <div class="balance-amount">$${parseFloat(component.amount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+                            <div class="small">Last updated: ${new Date().toLocaleString()}</div>
+                        `;
+                        
+                        parentElement.appendChild(balanceCard);
+                        break;
+                        
+                    case 'transactions':
+                        const transactionsTable = document.createElement('div');
+                        transactionsTable.className = 'chat-component';
+                        
+                        let tableHTML = `
+                            <h5>Recent Transactions</h5>
+                            <table class="transaction-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>Amount</th>
+                                        <th>Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                        `;
+                        
+                        component.transactions.forEach(transaction => {
+                            const amount = parseFloat(transaction.amount);
+                            const amountClass = amount < 0 ? 'text-danger' : 'text-success';
+                            const amountSymbol = amount < 0 ? '-' : '+';
+                            const amountFormatted = Math.abs(amount).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                            
+                            tableHTML += `
+                                <tr>
+                                    <td>${transaction.date}</td>
+                                    <td>${transaction.description}</td>
+                                    <td class="${amountClass}">${amountSymbol}$${amountFormatted}</td>
+                                    <td>$${parseFloat(transaction.balance).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                                </tr>
+                            `;
+                        });
+                        
+                        tableHTML += `
+                                </tbody>
+                            </table>
+                            <button class="btn btn-sm btn-outline-primary mt-2">View All Transactions</button>
+                        `;
+                        
+                        transactionsTable.innerHTML = tableHTML;
+                        parentElement.appendChild(transactionsTable);
+                        break;
+                        
+                    case 'loan_options':
+                        const loanOptions = document.createElement('div');
+                        loanOptions.className = 'chat-component loan-options';
+                        
+                        let loanHTML = `<h5>Available Loan Options</h5>`;
+                        
+                        component.options.forEach(option => {
+                            loanHTML += `
+                                <div class="loan-option" data-loan-id="${option.id}">
+                                    <div>
+                                        <strong>${option.name}</strong>
+                                        <div>${option.description}</div>
+                                        <div class="small">Interest Rate: ${option.rate}% | Term: ${option.term}</div>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-sm btn-primary">Apply</button>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        
+                        loanOptions.innerHTML = loanHTML;
+                        parentElement.appendChild(loanOptions);
+                        
+                        // Add event listeners to loan option buttons
+                        const applyButtons = loanOptions.querySelectorAll('.btn-primary');
+                        applyButtons.forEach(button => {
+                            button.addEventListener('click', function() {
+                                const loanId = this.closest('.loan-option').dataset.loanId;
+                                addUserMessage(`I'd like to apply for this loan.`);
+                                processUserInput(`I'd like to apply for loan ID: ${loanId}`);
+                            });
+                        });
+                        break;
+                        
+                    case 'financial_insights':
+                        const insightsCard = document.createElement('div');
+                        insightsCard.className = 'chat-component';
+                        
+                        insightsCard.innerHTML = `
+                            <h5>Your Financial Insights</h5>
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <h6 class="card-title">Spending Breakdown</h6>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <div>Food & Dining</div>
+                                        <div>30%</div>
+                                    </div>
+                                    <div class="progress mb-3">
+                                        <div class="progress-bar bg-primary" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <div>Housing</div>
+                                        <div>45%</div>
+                                    </div>
+                                    <div class="progress mb-3">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <div>Transportation</div>
+                                        <div>15%</div>
+                                    </div>
+                                    <div class="progress mb-3">
+                                        <div class="progress-bar bg-info" role="progressbar" style="width: 15%" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <div>Other</div>
+                                        <div>10%</div>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">Savings Goal</h6>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <div>Emergency Fund</div>
+                                        <div>$3,000/$10,000</div>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        parentElement.appendChild(insightsCard);
+                        break;
+                }
+            }
+
+            // Modify the processUserInput function
+            function processUserInput(message) {
+                showTypingIndicator();
+                
+                // Check if the message is one of the predefined queries
+                const predefinedQueries = [
+                    "Check account balance",
+                    "View recent transactions",
+                    "Book an appointment",
+                    "Loan options", 
+                    "Financial insights",
+                    // Include translations for other languages here
+                    "खाता शेष जाँचें", "हाल के लेनदेन देखें", "अपॉइंटमेंट बुक करें", "लोन विकल्प", "वित्तीय अंतर्दृष्टि",
+                    "Consultar saldo de cuenta", "Ver transacciones recientes", "Reservar una cita", "Opciones de préstamo", "Información financiera",
+                    "Vérifier le solde du compte", "Voir les transactions récentes", "Prendre rendez-vous", "Options de prêt", "Aperçus financiers",
+                    "التحقق من رصيد الحساب", "عرض المعاملات الأخيرة", "حجز موعد", "خيارات القرض", "رؤى مالية",
+                    "查询账户余额", "查看最近交易", "预约服务", "贷款选项", "财务洞察"
+                ];
+                
+                // If it's a predefined query, use mock data directly
+                if (predefinedQueries.includes(message)) {
+                    handleWithMockData(message);
+                } 
+                // Otherwise, try API call first, fallback to mock if needed
+                else {
+                    // API call using fetch
+                    fetch('/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ 
+                            query: message, 
+                            session_id: sessionId 
+                        })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error('Fetch failed or server not available');
+                    })
+                    .then(data => {
+                        processResponse(data);
+                    })
+                    .catch(error => {
+                        console.log('Falling back to mock data:', error);
+                        // Fallback to mock data if API call fails
+                        handleWithMockData(message);
+                    });
+                }
+            }
+
+            // Function to handle response processing (moved from the then block)
+            function processResponse(data) {
+                removeTypingIndicator();
+                
+                const botMessage = addBotMessage(data.answer);
+                
+                // Render component if available
+                if (data.component) {
+                    renderComponent(data.component, botMessage);
+                }
+                
+                // Display sources if available
+                if (data.sources) {
+                    addSourcesMessage(data.sources);
+                }
+                
+                // Play audio if available
+                playAudio(data.audio_url);
+            }
+
+            // Function to handle mock data responses
+            function handleWithMockData(message) {
+                setTimeout(() => {
+                    const messageLower = message.toLowerCase();
+                    let response = {
+                        answer: "I'm here to help with your banking needs. You can ask about your account balance, recent transactions, book appointments, or explore loan options.",
+                        sources: null,
+                        audio_url: null
+                    };
+                    
+                    if (messageLower.includes('balance') || messageLower.includes('how much money')) {
+                        response.answer = 'Here is your current account balance:';
+                        response.component = {
+                            type: 'balance',
+                            amount: '5432.10'
+                        };
+                    }
+                    else if (messageLower.includes('transaction') || messageLower.includes('spending')) {
+                        response.answer = 'Here are your recent transactions:';
+                        response.component = {
+                            type: 'transactions',
+                            transactions: [
+                                { date: '2025-04-05', description: 'Grocery Store', amount: '-84.36', balance: '5432.10' },
+                                { date: '2025-04-03', description: 'Direct Deposit - Payroll', amount: '2500.00', balance: '5516.46' },
+                                { date: '2025-04-02', description: 'Restaurant Payment', amount: '-45.82', balance: '3016.46' },
+                                { date: '2025-04-01', description: 'Monthly Subscription', amount: '-14.99', balance: '3062.28' },
+                                { date: '2025-03-28', description: 'Online Purchase', amount: '-129.99', balance: '3077.27' }
+                            ]
+                        };
+                        response.sources = "Transaction data from your account history.";
+                    }
+                    else if (messageLower.includes('appointment') || messageLower.includes('book') || messageLower.includes('advisor')) {
+                        response.answer = 'I can help you book an appointment with one of our specialists:';
+                        response.component = {
+                            type: 'appointment_form',
+                            options: [
+                                { value: 'investment', label: 'Investment Advisor' },
+                                { value: 'mortgage', label: 'Mortgage Specialist' },
+                                { value: 'account', label: 'Account Manager' },
+                                { value: 'financial_planning', label: 'Financial Planning' }
+                            ]
+                        };
+                    }
+                    else if (messageLower.includes('loan')) {
+                        response.answer = 'Here are our current loan offerings:';
+                        response.component = {
+                            type: 'loan_options',
+                            options: [
+                                { id: 'personal', name: 'Personal Loan', description: 'For personal expenses and needs', rate: '9.99', term: 'Up to 5 years' },
+                                { id: 'auto', name: 'Auto Loan', description: 'For purchasing a new or used vehicle', rate: '5.49', term: 'Up to 7 years' },
+                                { id: 'home', name: 'Home Loan', description: 'For home purchases and refinancing', rate: '4.25', term: 'Up to 30 years' },
+                                { id: 'education', name: 'Education Loan', description: 'For tuition and education expenses', rate: '6.75', term: 'Up to 10 years' }
+                            ]
+                        };
+                        response.sources = "Current loan rates as of April 24, 2025.";
+                    }
+                    else if (messageLower.includes('insight') || messageLower.includes('analysis')) {
+                        response.answer = 'Here are some insights about your finances:';
+                        response.component = {
+                            type: 'financial_insights'
+                        };
+                        response.sources = "Analysis based on your spending patterns from the last 3 months.";
+                    }
+                    
+                    processResponse(response);
+                }, 1000);
+            }
+
+            // Add the appendMessage function from the second code
+            function appendMessage(sender, message) {
+                const chatBox = document.getElementById('chatBody'); // Use existing chatBody instead of chat-box
+                const msgDiv = document.createElement('div');
+                msgDiv.className = sender === 'user' ? 'user-message message' : 'bot-message message';
+                msgDiv.innerText = message;
+                chatBox.appendChild(msgDiv);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+
+            // Add sendMessage function that integrates with existing code
+            function sendMessage() {
+                const input = document.getElementById('chatInput'); // Use existing chatInput
+                const message = input.value;
+                if (!message.trim()) return;
+
+                addUserMessage(message); // Use existing addUserMessage instead of appendMessage
+                input.value = '';
+                processUserInput(message); // Use existing processUserInput
+            }
+
+            // Add event listener for the new button if you add it to your HTML
+            document.addEventListener("DOMContentLoaded", function() {
+                // If you add a new send button with id "send-button"
+                const newSendButton = document.getElementById('send-button');
+                if (newSendButton) {
+                    newSendButton.addEventListener('click', sendMessage);
+                }
+            });
+            
+
+            // Handle send button click
+            sendButton.addEventListener('click', function() {
+                const message = chatInput.value.trim();
+                if (message) {
+                    addUserMessage(message);
+                    chatInput.value = '';
+                    processUserInput(message);
+                
+                }
+            });
+            
+            
+            // Handle Enter key press
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const message = chatInput.value.trim();
+                    if (message) {
+                        addUserMessage(message);
+                        chatInput.value = '';
+                        processUserInput(message);
+                    }
+                }
+            });
+            
+            // Handle suggestion button clicks
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('suggestion')) {
+                    const message = e.target.textContent;
+                    addUserMessage(message);
+                    processUserInput(message);
+                }
+            });
+            
+            // Handle language change
+            languageSelector.addEventListener('change', function() {
+                const language = this.value;
+                let welcomeMessage = '';
+                
+                switch(language) {
+                    case 'hindi':
+                        welcomeMessage = 'नमस्ते! मैं आपका AI बैंकिंग सहायक हूँ। मैं आपकी कैसे मदद कर सकता हूँ?';
+                        break;
+                    case 'spanish':
+                        welcomeMessage = '¡Hola! Soy tu asistente bancario de IA. ¿Cómo puedo ayudarte hoy?';
+                        break;
+                    case 'french':
+                        welcomeMessage = 'Bonjour! Je suis votre assistant bancaire IA. Comment puis-je vous aider aujourd\'hui?';
+                        break;
+                    case 'arabic':
+                        welcomeMessage = 'مرحبا! أنا مساعدك المصرفي الذكي. كيف يمكنني مساعدتك اليوم؟';
+                        break;
+                    case 'chinese':
+                        welcomeMessage = '你好！我是您的AI银行助手。今天我能为您做些什么？';
+                        break;
+                    default:
+                        welcomeMessage = 'Hello! I\'m your AI banking assistant. How can I help you today?';
+                }
+                
+                // Clear chat and add welcome message in new language
+                chatBody.innerHTML = '';
+                addBotMessage(welcomeMessage);
+                
+                // Add suggestions in selected language
+                const suggestions = document.createElement('div');
+                suggestions.className = 'bot-message message';
+                
+                let suggestionsText = '';
+                switch(language) {
+                    case 'hindi':
+                        suggestionsText = 'आप मुझसे पूछ सकते हैं:';
+                        suggestions.innerHTML = `${suggestionsText}
+                            <div class="chat-component">
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">खाता शेष जाँचें</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">हाल के लेनदेन देखें</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">अपॉइंटमेंट बुक करें</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">लोन विकल्प</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">वित्तीय अंतर्दृष्टि</button>
+                            </div>`;
+                        break;
+                    case 'spanish':
+                        suggestionsText = 'Puedes preguntarme sobre:';
+                        suggestions.innerHTML = `${suggestionsText}
+                            <div class="chat-component">
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">Consultar saldo de cuenta</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">Ver transacciones recientes</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">Reservar una cita</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">Opciones de préstamo</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">Información financiera</button>
+                            </div>`;
+                        break;
+                    case 'french':
+                        suggestionsText = 'Vous pouvez me demander:';
+                        suggestions.innerHTML = `${suggestionsText}
+                            <div class="chat-component">
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">Vérifier le solde du compte</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">Voir les transactions récentes</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">Prendre rendez-vous</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">Options de prêt</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">Aperçus financiers</button>
+                            </div>`;
+                        break;
+                    case 'arabic':
+                        suggestionsText = 'يمكنك أن تسألني عن:';
+                        suggestions.innerHTML = `${suggestionsText}
+                            <div class="chat-component">
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">التحقق من رصيد الحساب</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">عرض المعاملات الأخيرة</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">حجز موعد</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">خيارات القرض</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">رؤى مالية</button>
+                            </div>`;
+                        break;
+                    case 'chinese':
+                        suggestionsText = '您可以向我询问:';
+                        suggestions.innerHTML = `${suggestionsText}
+                            <div class="chat-component">
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">查询账户余额</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">查看最近交易</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">预约服务</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">贷款选项</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">财务洞察</button>
+                            </div>`;
+                        break;
+                    default:
+                        suggestionsText = 'You can ask me about:';
+                        suggestions.innerHTML = `${suggestionsText}
+                            <div class="chat-component">
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">Check account balance</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">View recent transactions</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">Book an appointment</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">Loan options</button>
+                                <button class="btn btn-outline-primary btn-sm m-1 suggestion">Financial insights</button>
+                            </div>`;
+                }
+                
+                chatBody.appendChild(suggestions);
+            });
+            
+            // Initialize chat with suggested actions
+            // (already done in the HTML)
+        });
+    </script>
+</body>
+</html>

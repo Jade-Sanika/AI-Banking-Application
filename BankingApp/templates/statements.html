@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statements | Premier Banking</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin: 0;
+        }
+        
+        .statement-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .statement-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .statement-title {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+        
+        .statement-date {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .statement-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        .statement-info {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .statement-amount {
+            font-weight: 600;
+        }
+        
+        .positive {
+            color: #27ae60;
+        }
+        
+        .negative {
+            color: #e74c3c;
+        }
+        
+        .filter-section {
+            display: flex;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .filter-btn {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 8px 15px;
+            margin-right: 10px;
+            font-size: 14px;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        
+        .filter-btn.active {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .account-selector {
+            background-color: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .account-info {
+            font-size: 14px;
+        }
+        
+        .account-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .account-number {
+            color: #7f8c8d;
+        }
+        
+        .dropdown-icon {
+            color: #7f8c8d;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Statements</h1>
+        </div>
+        
+        <div class="account-selector">
+            <div class="account-info">
+                <div class="account-name">Premier Checking</div>
+                <div class="account-number">•••• •••• •••• 4582</div>
+            </div>
+            <div class="dropdown-icon">▼</div>
+        </div>
+        
+        <div class="filter-section">
+            <button class="filter-btn active">All</button>
+            <button class="filter-btn">2023</button>
+            <button class="filter-btn">2022</button>
+            <button class="filter-btn">2021</button>
+            <button class="filter-btn">Q2 2023</button>
+            <button class="filter-btn">Q1 2023</button>
+        </div>
+        
+        <div class="statement-card">
+            <div class="statement-header">
+                <div class="statement-title">May 2023 Statement</div>
+                <div class="statement-date">Jun 1, 2023</div>
+            </div>
+            <div class="statement-details">
+                <div class="statement-info">
+                    <div>Opening Balance: $10,245.67</div>
+                    <div>Closing Balance: $12,456.78</div>
+                </div>
+                <div class="statement-amount positive">+$2,211.11</div>
+            </div>
+        </div>
+        
+        <div class="statement-card">
+            <div class="statement-header">
+                <div class="statement-title">April 2023 Statement</div>
+                <div class="statement-date">May 1, 2023</div>
+            </div>
+            <div class="statement-details">
+                <div class="statement-info">
+                    <div>Opening Balance: $9,876.54</div>
+                    <div>Closing Balance: $10,245.67</div>
+                </div>
+                <div class="statement-amount positive">+$369.13</div>
+            </div>
+        </div>
+        
+        <div class="statement-card">
+            <div class="statement-header">
+                <div class="statement-title">March 2023 Statement</div>
+                <div class="statement-date">Apr 1, 2023</div>
+            </div>
+            <div class="statement-details">
+                <div class="statement-info">
+                    <div>Opening Balance: $11,234.56</div>
+                    <div>Closing Balance: $9,876.54</div>
+                </div>
+                <div class="statement-amount negative">-$1,358.02</div>
+            </div>
+        </div>
+        
+        <div class="statement-card">
+            <div class="statement-header">
+                <div class="statement-title">February 2023 Statement</div>
+                <div class="statement-date">Mar 1, 2023</div>
+            </div>
+            <div class="statement-details">
+                <div class="statement-info">
+                    <div>Opening Balance: $10,987.65</div>
+                    <div>Closing Balance: $11,234.56</div>
+                </div>
+                <div class="statement-amount positive">+$246.91</div>
+            </div>
+        </div>
+        
+        <div class="statement-card">
+            <div class="statement-header">
+                <div class="statement-title">January 2023 Statement</div>
+                <div class="statement-date">Feb 1, 2023</div>
+            </div>
+            <div class="statement-details">
+                <div class="statement-info">
+                    <div>Opening Balance: $10,543.21</div>
+                    <div>Closing Balance: $10,987.65</div>
+                </div>
+                <div class="statement-amount positive">+$444.44</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

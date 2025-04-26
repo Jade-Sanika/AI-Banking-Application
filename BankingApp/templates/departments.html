@@ -1,0 +1,207 @@
+<!-- Updated templates/result.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Query - Departments</title>
+    
+    <!-- Embedded CSS -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #ccc;
+        }
+
+        h1 {
+            color: #007BFF;
+            margin-bottom: 10px;
+        }
+
+        .query-summary, .departments {
+            margin-top: 30px;
+        }
+
+        .query-text {
+            background-color: #eef;
+            padding: 15px;
+            border-left: 4px solid #007BFF;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+
+        .department-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .department-item {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .department-item.selected {
+            border-left: 6px solid #28a745;
+            background-color: #e8f5e9;
+        }
+
+        .dept-info h3 {
+            margin: 0;
+            color: #343a40;
+        }
+
+        .dept-info p {
+            margin: 5px 0 0;
+            color: #555;
+        }
+
+        .dept-actions {
+            text-align: right;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .download-btn {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .selected-indicator {
+            display: inline-block;
+            background-color: #28a745;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        .back-action {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        footer {
+            text-align: center;
+            padding-top: 30px;
+            font-size: 14px;
+            color: #888;
+        }
+
+        .flash-messages {
+            margin-top: 20px;
+        }
+
+        .flash-message {
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .flash-message.success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .flash-message.error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .flash-message.info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Department Selection</h1>
+            <p>Your query has been analyzed and routed to the appropriate department.</p>
+        </header>
+        
+        <main>
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for category, message in messages %}
+                            <div class="flash-message {{ category }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            
+            <div class="query-summary">
+                <h2>Your Query</h2>
+                <p class="query-text">{{ query }}</p>
+            </div>
+            
+            <div class="departments">
+                <h2>Available Departments</h2>
+                
+                <ul class="department-list">
+                    {% for dept_key, dept_desc in departments.items() %}
+                    <li class="department-item {% if dept_key == selected_dept %}selected{% endif %}">
+                        <div class="dept-info">
+                            <h3>{{ dept_desc.split(' - ')[0] }}</h3>
+                            <p>{{ dept_desc.split(' - ')[1] }}</p>
+                        </div>
+                        {% if dept_key == selected_dept %}
+                        <div class="dept-actions">
+                            <span class="selected-indicator">Recommended</span>
+                            <a href="{{ url_for('download_pdf', department=dept_key) }}" class="btn download-btn">Download PDF</a>
+                        </div>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <div class="back-action">
+                <a href="{{ url_for('query') }}" class="btn download-btn">New Query</a>
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 Banking Query Routing System</p>
+        </footer>
+    </div>
+</body>
+</html>

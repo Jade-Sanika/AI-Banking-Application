@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payments | Premier Banking</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin: 0;
+        }
+        
+        .payment-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        
+        .payment-option:last-child {
+            border-bottom: none;
+        }
+        
+        .payment-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e3f2fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #3498db;
+            font-size: 20px;
+        }
+        
+        .payment-info h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        
+        .payment-info p {
+            margin: 0;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            color: #2c3e50;
+            margin: 25px 0 15px 0;
+        }
+        
+        .bill-payee {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .bill-payee:last-child {
+            border-bottom: none;
+        }
+        
+        .payee-details {
+            display: flex;
+            align-items: center;
+        }
+        
+        .payee-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e3f2fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: #3498db;
+        }
+        
+        .payee-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+        
+        .payee-info p {
+            margin: 0;
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+        
+        .upcoming-payment {
+            font-weight: bold;
+            text-align: right;
+            font-size: 14px;
+        }
+        
+        .due {
+            color: #e74c3c;
+        }
+        
+        .paid {
+            color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Payments</h1>
+        </div>
+        
+        <div class="payment-card">
+            <div class="payment-option">
+                <div class="payment-icon">💳</div>
+                <div class="payment-info">
+                    <h3>Pay a Bill</h3>
+                    <p>Make one-time or recurring payments</p>
+                </div>
+            </div>
+            
+            <div class="payment-option">
+                <div class="payment-icon">📱</div>
+                <div class="payment-info">
+                    <h3>Mobile Payment</h3>
+                    <p>Send money via phone number or email</p>
+                </div>
+            </div>
+            
+            <div class="payment-option">
+                <div class="payment-icon">🏦</div>
+                <div class="payment-info">
+                    <h3>Loan Payment</h3>
+                    <p>Make payments on your loans</p>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">My Payees</h2>
+        
+        <div class="payment-card">
+            <div class="bill-payee">
+                <div class="payee-details">
+                    <div class="payee-icon">💡</div>
+                    <div class="payee-info">
+                        <h4>Electric Company</h4>
+                        <p>Account: •••• 7821</p>
+                    </div>
+                </div>
+                <div class="upcoming-payment due">Due May 25</div>
+            </div>
+            
+            <div class="bill-payee">
+                <div class="payee-details">
+                    <div class="payee-icon">💧</div>
+                    <div class="payee-info">
+                        <h4>Water Utility</h4>
+                        <p>Account: •••• 4512</p>
+                    </div>
+                </div>
+                <div class="upcoming-payment">Due June 3</div>
+            </div>
+            
+            <div class="bill-payee">
+                <div class="payee-details">
+                    <div class="payee-icon">🏠</div>
+                    <div class="payee-info">
+                        <h4>Mortgage Payment</h4>
+                        <p>Account: •••• 9012</p>
+                    </div>
+                </div>
+                <div class="upcoming-payment paid">Paid May 1</div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">Recent Payments</h2>
+        
+        <div class="payment-card">
+            <div class="bill-payee">
+                <div class="payee-details">
+                    <div class="payee-icon">📱</div>
+                    <div class="payee-info">
+                        <h4>To: Alex Johnson</h4>
+                        <p>May 18, 2023 • Mobile Payment</p>
+                    </div>
+                </div>
+                <div class="upcoming-payment">-$75.00</div>
+            </div>
+            
+            <div class="bill-payee">
+                <div class="payee-details">
+                    <div class="payee-icon">💡</div>
+                    <div class="payee-info">
+                        <h4>Electric Bill</h4>
+                        <p>May 15, 2023 • Auto Pay</p>
+                    </div>
+                </div>
+                <div class="upcoming-payment">-$132.45</div>
+            </div>
+            
+            <div class="bill-payee">
+                <div class="payee-details">
+                    <div class="payee-icon">📞</div>
+                    <div class="payee-info">
+                        <h4>Phone Bill</h4>
+                        <p>May 10, 2023 • One-time Payment</p>
+                    </div>
+                </div>
+                <div class="upcoming-payment">-$89.99</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

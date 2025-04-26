@@ -1,0 +1,116 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking Query System</title>
+
+    <!-- Embedded CSS -->
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        header h1 {
+            color: #007BFF;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #555;
+            font-size: 16px;
+        }
+
+        main {
+            padding: 10px 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .btn {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #888;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Welcome to Banking Query Routing System</h1>
+            <p>Please describe your query, and we'll route it to the appropriate department.</p>
+        </header>
+        
+        <main>
+            <form action="{{ url_for('submit_query') }}" method="post">
+                <div class="form-group">
+                    <label for="query">Your Query:</label>
+                    <textarea id="query" name="query" rows="6" required placeholder="Please describe your issue or question in detail..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn">Check Department</button>
+                </div>
+            </form>
+        </main>
+        
+        <footer>
+            <p>&copy; 2025 Banking Query Routing System</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investments | Premier Banking</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin: 0;
+        }
+        
+        .investment-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .investment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .investment-title {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+        
+        .investment-date {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .investment-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        .investment-info {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        .investment-amount {
+            font-weight: 600;
+        }
+        
+        .positive {
+            color: #27ae60;
+        }
+        
+        .negative {
+            color: #e74c3c;
+        }
+
+        .account-selector {
+            background-color: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .account-info {
+            font-size: 14px;
+        }
+        
+        .account-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .account-number {
+            color: #7f8c8d;
+        }
+        
+        .dropdown-icon {
+            color: #7f8c8d;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Investments</h1>
+        </div>
+        
+        <div class="account-selector">
+            <div class="account-info">
+                <div class="account-name">Premier Investment Portfolio</div>
+                <div class="account-number">•••• •••• •••• 9721</div>
+            </div>
+            <div class="dropdown-icon">▼</div>
+        </div>
+        
+        <div class="investment-card">
+            <div class="investment-header">
+                <div class="investment-title">Fixed Deposit - 5 Years</div>
+                <div class="investment-date">Started: Jan 10, 2022</div>
+            </div>
+            <div class="investment-details">
+                <div class="investment-info">
+                    <div>Amount: $20,000</div>
+                    <div>Interest Rate: 7.25%</div>
+                </div>
+                <div class="investment-amount positive">Maturity: $28,450</div>
+            </div>
+        </div>
+
+        <div class="investment-card">
+            <div class="investment-header">
+                <div class="investment-title">Government Bonds</div>
+                <div class="investment-date">Purchased: Mar 15, 2023</div>
+            </div>
+            <div class="investment-details">
+                <div class="investment-info">
+                    <div>Amount: $10,000</div>
+                    <div>Coupon: 6.75%</div>
+                </div>
+                <div class="investment-amount positive">Current Value: $10,680</div>
+            </div>
+        </div>
+
+        <div class="investment-card">
+            <div class="investment-header">
+                <div class="investment-title">Equity Stocks</div>
+                <div class="investment-date">Last Update: Apr 24, 2025</div>
+            </div>
+            <div class="investment-details">
+                <div class="investment-info">
+                    <div>Portfolio Value: $15,600</div>
+                    <div>Invested: $12,000</div>
+                </div>
+                <div class="investment-amount positive">+30%</div>
+            </div>
+        </div>
+
+        <div class="investment-card">
+            <div class="investment-header">
+                <div class="investment-title">Recurring Deposit - 2 Years</div>
+                <div class="investment-date">Started: Jul 1, 2023</div>
+            </div>
+            <div class="investment-details">
+                <div class="investment-info">
+                    <div>Monthly Installment: $500</div>
+                    <div>Interest Rate: 6.5%</div>
+                </div>
+                <div class="investment-amount positive">Maturity: $13,200</div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

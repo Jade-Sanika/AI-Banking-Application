@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error | Banking App</title>
+    <style>
+        body {
+            background-color: #f8d7da;
+            color: #721c24;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .error-box {
+            background-color: #f5c6cb;
+            border: 1px solid #f5c2c7;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        p {
+            margin-bottom: 30px;
+        }
+        a {
+            text-decoration: none;
+            color: white;
+            background-color: #721c24;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #5a141b;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-box">
+        <h1>Oops! Something went wrong 😞</h1>
+        <p>{{ error or "An unexpected error has occurred. Please try again later." }}</p>
+        <a href="{{ url_for('login') }}">Back to Login</a>
+    </div>
+</body>
+</html>
